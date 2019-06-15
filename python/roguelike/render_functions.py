@@ -5,6 +5,8 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width, sc
         for x in range(game_map.width):
             visible = libtcod.map_is_in_fov(fov_map, x, y)
             wall = game_map.tiles[x][y].block_sight
+
+            color_name = None
             if visible:
                 if wall:
                     color_name = "light_wall"
@@ -12,14 +14,16 @@ def render_all(con, entities, game_map, fov_map, fov_recompute, screen_width, sc
                 else:
                     color_name = "light_ground"
 
-            else:
+                game_map.tiles[x][y].explored = True
+
+            elif game_map.tiles[x][y].explored:
                 if wall:
                     color_name = "dark_wall"
 
                 else:
                     color_name = "dark_ground"
-                
-            libtcod.console_set_char_background(con, x, y, colors.get(color_name), libtcod.BKGND_SET)
+            if color_name:    
+                libtcod.console_set_char_background(con, x, y, colors.get(color_name), libtcod.BKGND_SET)
                 
     #Draw all entities in the list
     for entity in entities:
