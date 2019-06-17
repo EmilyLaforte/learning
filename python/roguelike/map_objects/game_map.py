@@ -1,5 +1,7 @@
 import tcod as libtcod
 from random import randint
+from roguelike.components.ai import BasicMonster
+from roguelike.components.fighter import Fighter
 from roguelike.entity import Entity
 from .rectangle import Rect
 from .tile import Tile
@@ -102,9 +104,17 @@ class GameMap:
             if not any([entity for entity in entities 
                         if entity.x == x and entity.y == y]):
                 if randint(0, 100) < 80:
-                    monster = Entity(x, y, "o", libtcod.desaturated_green, "Orc", blocks = True)
+                    fighter_component = Fighter(hp = 10, defense = 0, power = 3)
+                    ai_component = BasicMonster()
+
+                    monster = Entity(x, y, "o", libtcod.desaturated_green, "Orc", blocks = True,
+                                    fighter=fighter_component, ai=ai_component)
                 else:
-                    monster = Entity(x, y, "T", libtcod.darker_green, "Troll", blocks = True)
+                    fighter_component = Fighter(hp = 16, defense = 1, power = 4)
+                    ai_component = BasicMonster()
+
+                    monster = Entity(x, y, "T", libtcod.darker_green, "Troll", blocks = True,
+                                    fighter=fighter_component, ai=ai_component)
 
                 entities.append(monster)
 
