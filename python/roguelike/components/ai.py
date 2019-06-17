@@ -10,5 +10,5 @@ class BasicMonster:
                 monster.move_towards(target.x, target.y, game_map, entities)
 
             elif target.fighter.hp > 0:
-                print("The {0} hugs you! You are shoked!".format(monster.name))
+                print("The {0} hugs you back! You are shocked!".format(monster.name))
     
