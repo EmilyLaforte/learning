@@ -85,7 +85,7 @@ def main():
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
                 if target:
-                    print("You hug the " + target.name + " and it smiles, it loves you!") 
+                    player.fighter.attack(target)
                 else:
                     player.move(dx, dy)
 
