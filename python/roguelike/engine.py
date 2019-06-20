@@ -109,7 +109,7 @@ def main():
             dead_entity = player_turn_result.get("dead")
 
             if message:
-                print("message")
+                print(message)
 
             if dead_entity:
                 if dead_entity == player:

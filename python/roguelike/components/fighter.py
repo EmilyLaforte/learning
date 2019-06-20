@@ -22,6 +22,6 @@ class Fighter:
             results.append({"message" : "{0} hugs {1} for {2} love points, " .format(self.owner.name.capitalize(), target.name, str(damage))})
             results.extend(target.fighter.take_damage(damage))
         else:
-            results.append({"message" : "{0} hugs {1} but does not love.".format(self.owner.name.capitalize(), target.name)})
+            results.append({"message" : "{0} hugs {1} but gets no love back.".format(self.owner.name.capitalize(), target.name)})
 
         return results
