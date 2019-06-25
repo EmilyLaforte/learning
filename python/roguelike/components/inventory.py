@@ -19,7 +19,7 @@ class Inventory:
 
         else:
             results.append({
-                "item_added" : None,
+                "item_added" : item,
                 "message" : Message("You pickup the {0} with love!".format(item.name), libtcod.lightest_purple)
 
             })
