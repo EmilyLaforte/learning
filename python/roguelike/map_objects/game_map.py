@@ -3,6 +3,7 @@ from random import randint
 from roguelike.components.ai import BasicMonster
 from roguelike.components.fighter import Fighter
 from roguelike.entity import Entity
+from roguelike.item_function import heal
 from .rectangle import Rect
 from .tile import Tile
 from roguelike.components.item import Item
@@ -127,7 +128,7 @@ class GameMap:
             y = randint(room.y1 + 1, room.y2 - 1)
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
-                item_component = Item()
+                item_component = Item(use_function=heal, amount=4)
                 item = Entity(x, y, "!", libtcod.lightest_magenta, "Love Points potion", render_order=RenderOrder.ITEM,
                                 item=item_component)
 
