@@ -49,3 +49,13 @@ class Inventory:
 
     def remove_item(self, item):
         self.items.remove(item)
+
+    def drop_item(self, item):
+        results = []
+        item.x = self.owner.x
+        item.y = self.owner.y
+
+        self.remove_item(item)
+        results.append({"item_dropped" : item, "message": Message("You drop the {0}, you regret droping it. You do not feel it's love anymore".format(item.name), libtcod.lightest_fuchsia)})
+
+        return results

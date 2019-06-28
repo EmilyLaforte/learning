@@ -68,9 +68,13 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 
     libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
 
-    if game_state == GameStates.SHOW_INVENTORY:
-        inventory_menu(con, "Press the key of your love story to use item or Esc to cancel.\n",
-            player.inventory, 50, screen_width, screen_height)
+    if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
+        if game_state == GameStates.SHOW_INVENTORY:
+            inventory_title = "Press the key of your love story to use item or Esc to cancel.\n"
+        else:
+            inventory_title = "Press the key of your love story to drop item or Esc to cancel.\n"
+        
+        inventory_menu(con, inventory_title, player.inventory, 50, screen_width, screen_height)
 
     libtcod.console_set_default_foreground(con, libtcod.lighter_magenta)
     libtcod.console_clear(panel)
