@@ -3,11 +3,12 @@ from random import randint
 from roguelike.components.ai import BasicMonster
 from roguelike.components.fighter import Fighter
 from roguelike.entity import Entity
-from roguelike.item_function import heal, cast_lightning
+from roguelike.item_function import heal, cast_lightning, cast_fireball
 from .rectangle import Rect
 from .tile import Tile
 from roguelike.components.item import Item
 from roguelike.render_functions import RenderOrder
+from roguelike.game_message import Message
 
 class GameMap:
     def __init__(self, width, height):
@@ -129,10 +130,14 @@ class GameMap:
 
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
                 item_chance = randint(0, 100)
-                if item_chance < 70:
+                if item_chance < 30:
                     item_component = Item(use_function=heal, amount=4)
                     item = Entity(x, y, "!", libtcod.lightest_magenta, "Love Points potion", render_order=RenderOrder.ITEM,
                                     item=item_component)
+
+                elif item_chance < 95:
+                    item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message("Left-click a target tile for the heart~beam, or right-click to cancel", libtcod.lightest_crimson), damage = 12, radius = 3)
+                    item = Entity(x, y, "^", libtcod.dark_magenta, "Fireball Scroll", render_order=RenderOrder.ITEM, item=item_component)
                 else:
                     item_component = Item(use_function=cast_lightning, damage=20, maximum_range = 5)
                     item = Entity(x, y, "^", libtcod.lighter_magenta, "Lightning Scroll", render_order=RenderOrder.ITEM,
