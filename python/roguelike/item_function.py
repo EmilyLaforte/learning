@@ -1,5 +1,6 @@
 import tcod as libtcod
 from .game_message import Message
+from roguelike.components.ai import ConfusedMonster
 
 def heal(*args, **kwargs):
     entity = args[0]
@@ -57,7 +58,7 @@ def cast_fireball(*args, **kwargs):
         results.append({"consumed" : False, "message" : Message("You cannot feel the love of a tile outside your field of view(Future-octopus-vision)", libtcod.light_magenta)})
         return results
         
-    results.append({"consumed" : False, "message" : Message("No enemy is close enough for god to descend.".format(radius), libtcod.light_magenta)})
+    results.append({"consumed" : True, "message" : Message("No enemy is close enough for god to descend.".format(radius), libtcod.light_magenta)})
 
     for entity in entities:
         if entity.distance(target_x, target_y) <= radius and entity.fighter:
@@ -65,4 +66,31 @@ def cast_fireball(*args, **kwargs):
             results.extend(entity.fighter.take_damage(damage))
         
     
+    return results
+
+def cast_confuse(*args, **kwargs):
+    entities = kwargs.get("entities")
+    fov_map = kwargs.get("fov_map")
+    target_x = kwargs.get("target_x")
+    target_y = kwargs.get("target_y")
+
+    results = []
+    
+    if not libtcod.map_is_in_fov(fov_map, target_x, target_y):
+        results.append({"consumed" : False, "message" : Message("You cannot feel the love of a tile outside your field of view(Future-octopus-vision)", libtcod.light_magenta)})
+        return results
+
+    for entity in entities:
+        if entity.x == target_x and entity.y == target_y and entity.ai:
+            confused_ai = ConfusedMonster(entity.ai, 10)
+            confused_ai.owner = entity
+            entity.ai = confused_ai
+
+            results.append({"consumed"  : True, "message" : Message("The {0}'s love starts to fade away, he looks like he went crazy!".format(entity.name), libtcod.light_sepia)})
+
+            break
+        
+    else:
+        results.append({"consumed" : False, "message" : Message("There is no targetable enemy at that location.", libtcod.dark_crimson)})
+
     return results
